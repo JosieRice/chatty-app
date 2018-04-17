@@ -56,7 +56,9 @@ class ChatBar extends Component {
             {if (event.key === "Enter") 
               { this.postChat(
                 document.getElementById('chat-username').value,
-                document.getElementById('chat-input').value) } 
+                document.getElementById('chat-input').value)
+                  event.target.value='';
+              } 
             }
           }
           // takes control of the state of input field
