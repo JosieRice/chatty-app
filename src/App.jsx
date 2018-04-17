@@ -60,11 +60,15 @@ class App extends Component {
   
 
 
-    
-    onPostChat (content) {
-      console.log("In app.jsx", content);
+    // function to pass to ChatBar to update chat log
+    onPostChat (username, content) {
+      // gives index number to be used for key
+      // not a great solution, but works for now
+      let total = this.state.messages.length
+
+      // packages a new message to an object with an id and info from input fields
+      const newMessage = {id: total, username: username, content: content};
       // adds a new message to list of messages in data state
-      const newMessage = {id: "abc8", username: content, content: "Purrrr"};
       const messages = this.state.messages.concat(newMessage);
       // update the state in app
       // setstate with updated information
@@ -85,7 +89,7 @@ class App extends Component {
       {/* passing messages array to MessageList */}
       <MessageList messages={this.state.messages} />
       {/* passing username state to ChatBar */}
-      <ChatBar onPostChat={ this.onPostChat } currentUser={this.state.messages[0].username} />
+      <ChatBar onPostChat={ this.onPostChat } />
     </div>
     )};
 }
