@@ -16,7 +16,7 @@ class MessageList extends Component {
 
     console.log("Rendering <MessageList/>");
     return (
-        <section>    
+        <section id='message-feed'>    
             {messages}         
         </section>
     );

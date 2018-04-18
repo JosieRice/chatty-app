@@ -2,17 +2,20 @@ import React, {Component} from 'react';
 import NavBar from './NavBar.jsx';
 import MessageList from './MessageList.jsx';
 import ChatBar from './ChatBar.jsx';
-import messages from './data.json';
+
+// import messages from './data.json';
 
 class App extends Component {
   constructor(props) {
     super(props);
+    // this.componentDidMount = this.componentDidMount.bind(this);
     this.onPostChat = this.onPostChat.bind(this);
     // data from data.JSON file set as state
     this.state = { 
-      messages : messages,
+      messages : [],
       socket : (new WebSocket("ws://localhost:3001"))
-     }; 
+     };
+     
   }
 
 
@@ -20,15 +23,25 @@ class App extends Component {
     (() => {
       this.state.socket.onopen = () => {
         console.log("Socket Open");
-        this.state.socket.send(JSON.stringify( messages ));
-        this.state.socket.onmessage = function(data) {
-          this.setState({ messages : data })
-          console.log(data);
+        this.state.socket.onmessage = (event) => {
+          console.log("HOWS MY SOCKETS?", event.data)
+          let newMessage = JSON.parse(event.data);
+          let messages = this.state.messages.concat(newMessage);
+          // update the state in app
+          // setstate with updated information
+          this.setState({ messages })
         }
       }
     })();
-  
   }
+
+
+    onPostChatWebSocket (newMessage) {
+      console.log(`Message about to be sent to server by ${newMessage.username}: ${newMessage.content}`);
+      this.state.socket.send(JSON.stringify( newMessage ));
+    };
+
+
 
 
 
@@ -39,12 +52,15 @@ class App extends Component {
       let total = this.state.messages.length + 1;
 
       // packages a new message to an object with an id and info from input fields
-      const newMessage = {id: total, username: username, content: content};
+      let newMessage = {id: total, username: username, content: content};
+
+      this.onPostChatWebSocket(newMessage);
+
       // adds a new message to list of messages in data state
-      const messages = this.state.messages.concat(newMessage);
-      // update the state in app
-      // setstate with updated information
-      this.setState({ messages })
+      let messages = this.state.messages.concat(newMessage);
+      // // update the state in app
+      // // setstate with updated information
+      // this.setState({ messages })
     };
   
   render() {
