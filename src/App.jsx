@@ -9,8 +9,28 @@ class App extends Component {
     super(props);
     this.onPostChat = this.onPostChat.bind(this);
     // data from data.JSON file set as state
-    this.state = { messages }; 
+    this.state = { 
+      messages : messages,
+      socket : (new WebSocket("ws://localhost:3001"))
+     }; 
   }
+
+
+  componentDidMount() { 
+    (() => {
+      this.state.socket.onopen = () => {
+        console.log("Socket Open");
+        this.state.socket.send(JSON.stringify( messages ));
+        this.state.socket.onmessage = function(data) {
+          this.setState({ messages : data })
+          console.log(data);
+        }
+      }
+    })();
+  
+  }
+
+
 
     // function to pass to ChatBar to update chat log
     onPostChat (username, content) {
