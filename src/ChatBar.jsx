@@ -16,15 +16,14 @@ class ChatBar extends Component {
   }
 
 
-
   usernameEntered (event) { 
     if (event.key === "Enter") 
     { 
-      this.postUser(document.getElementById('chat-username').value, this.state.username);
+      const username = document.getElementById('chat-username').value
+      this.postUser(username, this.state.username);
+      this.setState({ username });
     } 
   }
-
-
 
   // on Enter, it passes the username and content into the postChat function
   onKeyPress (event) { 
