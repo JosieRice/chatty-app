@@ -12,7 +12,7 @@ class Message extends Component {
     } else {
       return (
         <div className="notification">
-          <span className="notification-content">Anonymous1 changed their name to {this.props.username}</span>
+          <span className="notification-content">{this.props.prevUsername} changed their name to {this.props.username}</span>
         </div>
       );
     }

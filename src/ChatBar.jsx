@@ -3,11 +3,10 @@ import React, {Component} from 'react';
 class ChatBar extends Component {
   constructor() {
     super();
-    // taking control of the state of the input
-    // for username and content
+    // for storing last updated username
     this.state = {
-      username: 'Anonymous',
-      content: ''
+      username: 'Anonymous'
+      // content: ''
     };
     this.onKeyPress = this.onKeyPress.bind(this);
     this.onContentChange = this.onContentChange.bind(this);
@@ -16,14 +15,7 @@ class ChatBar extends Component {
   }
 
 
-  usernameEntered (event) { 
-    if (event.key === "Enter") 
-    { 
-      const username = document.getElementById('chat-username').value
-      this.postUser(username, this.state.username);
-      this.setState({ username });
-    } 
-  }
+
 
   // on Enter, it passes the username and content into the postChat function
   onKeyPress (event) { 
@@ -54,8 +46,14 @@ class ChatBar extends Component {
     this.props.onPostChat(username, content);
   }
 
-  postUser(username, prevName) {
-    this.props.onChangeUser(username, prevName);
+  // sends previous and new username info to app.jsx function and sets new currentUser.
+  usernameEntered (event) { 
+    if (event.key === "Enter") 
+    { 
+      const username = document.getElementById('chat-username').value
+      this.props.onChangeUser(username, this.state.username);
+      this.setState({ username });
+    } 
   }
 
   render() {
@@ -78,7 +76,7 @@ class ChatBar extends Component {
           // enter runs the postChat function and passes the input values of username and chat content
           onKeyPress={this.onKeyPress}
           // takes control of the state of input field
-          onChange={this.onContentChange}
+          // onChange={this.onContentChange}
           />
     </footer>   
     );

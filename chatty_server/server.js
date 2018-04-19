@@ -38,10 +38,12 @@ wss.on('connection', (ws) => {
         }
     } 
     if (dataParsed.type === "postNotification") {
+        console.log('SERVER DATA', dataParsed)
         const newNotification = {
             id: uuidv4(),
             type: "incomingNotification",
-            username: dataParsed.username
+            username: dataParsed.username,
+            prevUsername: dataParsed.prevName
         };
         // if there's a client in readystate, with a websocket open, send the JSON back
         for (const client of wss.clients) {
