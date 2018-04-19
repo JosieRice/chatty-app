@@ -14,9 +14,35 @@ const server = express()
 // Create the WebSockets server
 const wss = new SocketServer({ server });
 
+
+wss.broadcast = function broadcast(data) {
+    wss.clients.forEach(function each(client) {
+        if (client.readyState === WebSocket.OPEN) {
+            client.send(data);
+        }
+    });
+};
+
+const broadcastFriendCount = () => {
+    wss.broadcast(JSON.stringify({
+        type: 'newFriendsCount',
+        numFriends: wss.clients.size,
+    }));
+};
+
+
+
+
+
+
 // what the client does when they connect
 wss.on('connection', (ws) => {
     console.log('Client connected');
+    broadcastFriendCount();
+
+    ws.on('close', () => {
+        broadcastFriendCount();
+    });
 
     ws.on('error', () => {});   
     ws.on('message', (data) => {

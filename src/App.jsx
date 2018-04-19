@@ -12,7 +12,7 @@ class App extends Component {
 
     this.state = { 
       messages : [],
-      // socket : ''
+      numFriends: 0,
     }
   };
 
@@ -24,10 +24,16 @@ class App extends Component {
       // When receiving message from ws server
       // parses and adds new message to the end of message state
       this.socket.onmessage = (event) => {
+        // sets state on number of users changed
         const newMessage = JSON.parse(event.data);
-        const messages = this.state.messages.concat(newMessage);
-        // setstate with updated information from server
-        this.setState({ messages });
+        if (newMessage.type === "newFriendsCount") {
+          this.setState({ numFriends : newMessage.numFriends })
+        } else {
+          // set state for messages
+          const messages = this.state.messages.concat(newMessage);
+          // setstate with updated information from server
+          this.setState({ messages });
+      }
       }
     };
   };
@@ -48,7 +54,7 @@ class App extends Component {
   render() {
     return (
     <div>
-      <NavBar />
+      <NavBar friends={ this.state.numFriends } />
       {/* passing messages array to MessageList */}
       <MessageList messages={this.state.messages} />
       {/* passing username state to ChatBar */}
@@ -64,11 +70,7 @@ export default App;
 
 ADDING NUMBER OF LOGGED IN USERS
 
-- put number of connected people into an object
-- send number of websocket connected people from server to app
-- make a state in app for connected users
-- recieve the number on app
-- update state in app with current number of people connected
+
 - pass this state to chatbar
 - add notification with number of people updating in chatbar
 
