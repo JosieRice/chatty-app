@@ -26,6 +26,7 @@ class App extends Component {
       this.socket.onmessage = (event) => {
         // sets state on number of users changed
         const newMessage = JSON.parse(event.data);
+        console.log("NEW MESSAGE ON APP", newMessage);
         if (newMessage.type === "newFriendsCount") {
           this.setState({ numFriends : newMessage.numFriends })
         } else {
@@ -33,6 +34,8 @@ class App extends Component {
           const messages = this.state.messages.concat(newMessage);
           // setstate with updated information from server
           this.setState({ messages });
+          console.log("STATE ON APP AFTER MESSAGE CLEARED", this.state);
+          
       }
       }
     };

@@ -14,7 +14,7 @@ const server = express()
 // Create the WebSockets server
 const wss = new SocketServer({ server });
 
-
+// general broadcast function, but be used with specific broadcasts below
 wss.broadcast = function broadcast(data) {
     wss.clients.forEach(function each(client) {
         if (client.readyState === WebSocket.OPEN) {
@@ -23,30 +23,26 @@ wss.broadcast = function broadcast(data) {
     });
 };
 
+// broadcasts a unique color when you first log in with current count of chatters
 const broadcastFriendCount = () => {
+    const userColor = randomColorGen();
     wss.broadcast(JSON.stringify({
         type: 'newFriendsCount',
         numFriends: wss.clients.size,
+        userColor: userColor,
     }));
 };
 
-
+// creates a random color
 const randomColorGen = (colors) => {
     const colorList = ["AliceBlue","AntiqueWhite","Aqua","Aquamarine","Azure","Beige","Bisque","Black","BlanchedAlmond","Blue","BlueViolet","Brown","BurlyWood","CadetBlue","Chartreuse","Chocolate","Coral","CornflowerBlue","Cornsilk","Crimson","Cyan","DarkBlue","DarkCyan","DarkGoldenRod","DarkGray","DarkGrey","DarkGreen","DarkKhaki","DarkMagenta","DarkOliveGreen","Darkorange","DarkOrchid","DarkRed","DarkSalmon","DarkSeaGreen","DarkSlateBlue","DarkSlateGray","DarkSlateGrey","DarkTurquoise","DarkViolet","DeepPink","DeepSkyBlue","DimGray","DimGrey","DodgerBlue","FireBrick","FloralWhite","ForestGreen","Fuchsia","Gainsboro","GhostWhite","Gold","GoldenRod","Gray","Grey","Green","GreenYellow","HoneyDew","HotPink","IndianRed","Indigo","Ivory","Khaki","Lavender","LavenderBlush","LawnGreen","LemonChiffon","LightBlue","LightCoral","LightCyan","LightGoldenRodYellow","LightGray","LightGrey","LightGreen","LightPink","LightSalmon","LightSeaGreen","LightSkyBlue","LightSlateGray","LightSlateGrey","LightSteelBlue","LightYellow","Lime","LimeGreen","Linen","Magenta","Maroon","MediumAquaMarine","MediumBlue","MediumOrchid","MediumPurple","MediumSeaGreen","MediumSlateBlue","MediumSpringGreen","MediumTurquoise","MediumVioletRed","MidnightBlue","MintCream","MistyRose","Moccasin","NavajoWhite","Navy","OldLace","Olive","OliveDrab","Orange","OrangeRed","Orchid","PaleGoldenRod","PaleGreen","PaleTurquoise","PaleVioletRed","PapayaWhip","PeachPuff","Peru","Pink","Plum","PowderBlue","Purple","Red","RosyBrown","RoyalBlue","SaddleBrown","Salmon","SandyBrown","SeaGreen","SeaShell","Sienna","Silver","SkyBlue","SlateBlue","SlateGray","SlateGrey","Snow","SpringGreen","SteelBlue","Tan","Teal","Thistle","Tomato","Turquoise","Violet","Wheat","White","WhiteSmoke","Yellow","YellowGreen"];
     const color = colorList[Math.floor(Math.random()*colorList.length)];
     return color;
 };
 
-
-
-
-
-
-
-
 // what the client does when they connect
 wss.on('connection', (ws) => {
-    const userColor = randomColorGen();
+    // const userColor = randomColorGen();
     console.log('Client connected');
     broadcastFriendCount();
 
@@ -61,7 +57,7 @@ wss.on('connection', (ws) => {
             type: "incomingMessage", 
             content: dataParsed.content, 
             username: dataParsed.username,
-            userColor: userColor,
+            // userColor: userColor,
         };
         // if there's a client in readystate, with a websocket open, send the JSON back
         for (const client of wss.clients) {
@@ -84,10 +80,7 @@ wss.on('connection', (ws) => {
                 client.send(JSON.stringify(newNotification));
             }
         }
-
     }
-
-   
 
   });
     // Set up a callback for when a client closes the socket. This usually means they closed their browser.
