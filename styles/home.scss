@@ -35,6 +35,7 @@ body {
   flex: 2;
 }
 
+.notification,
 .message {
   display: flex;
   padding: 5px;
@@ -56,6 +57,7 @@ body {
   flex: 8;
 }
 
+.notification-content,
 .message-username {
   flex: 2;
   font-weight: 700;
@@ -82,4 +84,8 @@ body {
   line-height: 60px;
   padding: 0 10px;
   text-decoration: none;
+}
+
+.notification {
+  padding-left: 20px;
 }

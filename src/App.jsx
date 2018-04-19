@@ -12,35 +12,35 @@ class App extends Component {
 
     this.state = { 
       messages : [],
-      socket : ''
+      // socket : ''
     }
   };
 
   // Immediately runs when this component has mounted (DOM is ready)
   componentDidMount() {
-    this.socket = (new WebSocket("ws://localhost:3001"));
+    this.socket = new WebSocket("ws://localhost:3001");
     this.socket.onopen = () => {
       console.log("Socket Open");
       // When receiving message from ws server
       // parses and adds new message to the end of message state
       this.socket.onmessage = (event) => {
-        let newMessage = JSON.parse(event.data);
-        let messages = this.state.messages.concat(newMessage);
-        // setstate with updated information
+        const newMessage = JSON.parse(event.data);
+        const messages = this.state.messages.concat(newMessage);
+        // setstate with updated information from server
         this.setState({ messages });
-      };
+      }
     };
   };
 
   // function to pass to ChatBar so I can get chatbars state into the app.jsx
   onPostChat (username, content) {   
     // packages and sends a new message to socket server
-    let newMessage = {type: "postMessage", username, content};
+    const newMessage = {type: "postMessage", username, content};
     this.socket.send(JSON.stringify( newMessage ));
   }
 
-  onChangeUser (username, prevName) {
-    let userNotification = {type: "postNotification", username, prevName};
+  onChangeUser (username, prevUsername) {
+    const userNotification = {type: "postNotification", username, prevUsername};
     this.socket.send(JSON.stringify( userNotification));
   }
   
