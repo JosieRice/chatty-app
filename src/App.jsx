@@ -39,8 +39,8 @@ class App extends Component {
     this.socket.send(JSON.stringify( newMessage ));
   }
 
-  onChangeUser (username) {
-    let userNotification = {type: "postNotification", username};
+  onChangeUser (username, prevName) {
+    let userNotification = {type: "postNotification", username, prevName};
     this.socket.send(JSON.stringify( userNotification));
   }
   

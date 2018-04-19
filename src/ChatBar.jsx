@@ -6,7 +6,7 @@ class ChatBar extends Component {
     // taking control of the state of the input
     // for username and content
     this.state = {
-      username: '',
+      username: 'Anonymous',
       content: ''
     };
     this.onKeyPress = this.onKeyPress.bind(this);
@@ -20,7 +20,7 @@ class ChatBar extends Component {
   usernameEntered (event) { 
     if (event.key === "Enter") 
     { 
-      this.postUser(document.getElementById('chat-username').value);
+      this.postUser(document.getElementById('chat-username').value, this.state.username);
     } 
   }
 
@@ -55,8 +55,8 @@ class ChatBar extends Component {
     this.props.onPostChat(username, content);
   }
 
-  postUser(username) {
-    this.props.onChangeUser(username);
+  postUser(username, prevName) {
+    this.props.onChangeUser(username, prevName);
   }
 
   render() {
@@ -69,7 +69,7 @@ class ChatBar extends Component {
           // sends notification when a user changes their username
           onKeyPress={this.usernameEntered}
           // takes control of the state of the input field
-          onChange={this.onUsernameChange}
+          // onChange={this.onUsernameChange}
           />
 
         <input 
@@ -88,15 +88,3 @@ class ChatBar extends Component {
 
 export default ChatBar;
 
-
-
-
-/*
-
-
-4. Add code to send type: "incomingNotification" messages from server
-
-5. Make the UI display a new notification in the MessageList when a new notification arrives.
-
-
-*/
