@@ -58,3 +58,20 @@ class App extends Component {
 }
 
 export default App;
+
+
+/*
+
+ADDING NUMBER OF LOGGED IN USERS
+
+- put number of connected people into an object
+- send number of websocket connected people from server to app
+- make a state in app for connected users
+- recieve the number on app
+- update state in app with current number of people connected
+- pass this state to chatbar
+- add notification with number of people updating in chatbar
+
+
+
+*/
