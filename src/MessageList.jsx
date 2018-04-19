@@ -13,10 +13,12 @@ class MessageList extends Component {
                     content={message.content} 
                     username={message.username} 
                     prevUsername={message.prevUsername} 
+                    color={message.color}
                 />
             );
         });
 
+        console.log("MESSAGE LIST COLOR", this.props.color);
     return (
         <section id="message-feed">    
             {messages}         

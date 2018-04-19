@@ -57,7 +57,7 @@ wss.on('connection', (ws) => {
             type: "incomingMessage", 
             content: dataParsed.content, 
             username: dataParsed.username,
-            // userColor: userColor,
+            color: dataParsed.color,
         };
         // if there's a client in readystate, with a websocket open, send the JSON back
         for (const client of wss.clients) {

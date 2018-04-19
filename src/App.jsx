@@ -13,6 +13,7 @@ class App extends Component {
     this.state = { 
       messages : [],
       numFriends: 0,
+      color: '',
     }
   };
 
@@ -27,6 +28,10 @@ class App extends Component {
         // sets state on number of users changed
         const newMessage = JSON.parse(event.data);
         console.log("NEW MESSAGE ON APP", newMessage);
+        if (this.state.color === '') {
+          this.setState({ color : newMessage.userColor });
+          console.log("STATE AFTER USER COLOR SET", this.state);
+        }
         if (newMessage.type === "newFriendsCount") {
           this.setState({ numFriends : newMessage.numFriends })
         } else {
@@ -35,7 +40,7 @@ class App extends Component {
           // setstate with updated information from server
           this.setState({ messages });
           console.log("STATE ON APP AFTER MESSAGE CLEARED", this.state);
-          
+
       }
       }
     };
@@ -44,7 +49,7 @@ class App extends Component {
   // function to pass to ChatBar so I can get chatbars state into the app.jsx
   onPostChat (username, content) {   
     // packages and sends a new message to socket server
-    const newMessage = {type: "postMessage", username, content};
+    const newMessage = {type: "postMessage", username, content, color: this.state.color};
     this.socket.send(JSON.stringify( newMessage ));
   }
 
