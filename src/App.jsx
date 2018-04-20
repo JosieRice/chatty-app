@@ -17,6 +17,22 @@ class App extends Component {
     }
   };
 
+  messageFromWS = (event) => {
+    // sets state on number of users changed
+    const newMessage = JSON.parse(event.data);
+    if (this.state.color === '') {
+      this.setState({ color : newMessage.userColor });
+    }
+    if (newMessage.type === "newFriendsCount") {
+      this.setState({ numFriends : newMessage.numFriends })
+    } else {
+      // set state for messages
+      const messages = this.state.messages.concat(newMessage);
+      // setstate with updated information from server
+      this.setState({ messages });
+    }
+  }
+
   // Immediately runs when this component has mounted (DOM is ready)
   componentDidMount() {
     this.socket = new WebSocket("ws://localhost:3001");
@@ -24,21 +40,7 @@ class App extends Component {
       console.log("Socket Open");
       // When receiving message from ws server
       // parses and adds new message to the end of message state
-      this.socket.onmessage = (event) => {
-        // sets state on number of users changed
-        const newMessage = JSON.parse(event.data);
-        if (this.state.color === '') {
-          this.setState({ color : newMessage.userColor });
-        }
-        if (newMessage.type === "newFriendsCount") {
-          this.setState({ numFriends : newMessage.numFriends })
-        } else {
-          // set state for messages
-          const messages = this.state.messages.concat(newMessage);
-          // setstate with updated information from server
-          this.setState({ messages });
-      }
-      }
+      this.socket.onmessage = this.messageFromWS;
     };
   };
 
@@ -57,27 +59,15 @@ class App extends Component {
   // Main render for webapp
   render() {
     return (
-    <div>
-      <NavBar friends={ this.state.numFriends } />
-      {/* passing messages array to MessageList */}
-      <MessageList messages={this.state.messages} />
-      {/* passing username state to ChatBar */}
-      <ChatBar onPostChat={ this.onPostChat } onChangeUser={ this.onChangeUser } />
-    </div>
-    )};
+      <div>
+        <NavBar friends={ this.state.numFriends } />
+        {/* passing messages array to MessageList */}
+        <MessageList messages={this.state.messages} />
+        {/* passing username state to ChatBar */}
+        <ChatBar onPostChat={ this.onPostChat } onChangeUser={ this.onChangeUser } />
+      </div>
+    )
+  }
 }
 
 export default App;
-
-
-/*
-
-ADDING NUMBER OF LOGGED IN USERS
-
-
-- pass this state to chatbar
-- add notification with number of people updating in chatbar
-
-
-
-*/

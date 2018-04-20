@@ -5,7 +5,7 @@ class ChatBar extends Component {
     super();
     // for storing last updated username
     this.state = {
-      username: 'Anonymous',
+      username: '',
     };
     this.onKeyPress = this.onKeyPress.bind(this);
     this.usernameEntered = this.usernameEntered.bind(this);
@@ -23,7 +23,7 @@ class ChatBar extends Component {
           username,
           message
         );
-        // clears message input field
+        // clears message input field on enter
         event.target.value = '';   
         // sets state username if it's new
         if (this.state.username !== username) {
