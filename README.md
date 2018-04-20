@@ -30,3 +30,4 @@ You can log in an chat with whoever is online. When the chat is over, all record
 
 ### Screen Shots
 
+!["Gif of chatty in action"](https://github.com/cbot83/chatty-app/blob/master/docs/Chatty.gif)
