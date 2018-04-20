@@ -14,19 +14,26 @@ class ChatBar extends Component {
   // on Enter, it passes the username and content into the postChat function
   onKeyPress (event) {
     if (event.key === "Enter") {
+      const imageRegex = /\.jpg|\.png|\.gif/;
       const username = document.getElementById('chat-username').value;
-      this.props.onPostChat(
-        username,
-        document.getElementById('chat-input').value
-      );
-      // clears message input field
-      event.target.value = '';
-      // sets state username if it's new
-      if (this.state.username !== username) {
-        this.setState({ username })
+      const message = document.getElementById('chat-input').value;
+      // won't let you submit a link to a photo
+      if (imageRegex.test(message) === false) {
+        this.props.onPostChat(
+          username,
+          message
+        );
+        // clears message input field
+        event.target.value = '';   
+        // sets state username if it's new
+        if (this.state.username !== username) {
+          this.setState({ username })
+        }      
       }
     } 
   }
+
+
 
   // sends previous and new username info to app.jsx function and sets new currentUser.
   usernameEntered (event) { 

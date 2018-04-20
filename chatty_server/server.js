@@ -49,6 +49,7 @@ wss.on('connection', (ws) => {
     ws.on('error', () => {});   
     ws.on('message', (data) => {
     const dataParsed = JSON.parse(data);
+        console.log('DATA ON SERVER', dataParsed);
 
     if (dataParsed.type === "postMessage") {
         // packages new message json to be sent to open clients as message

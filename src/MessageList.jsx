@@ -17,8 +17,6 @@ class MessageList extends Component {
                 />
             );
         });
-
-        console.log("MESSAGE LIST COLOR", this.props.color);
     return (
         <section id="message-feed">    
             {messages}         
